@@ -55,7 +55,7 @@ describe('scooter methods', () => {
 
   test('should return scooter to the station', () => {
     const scooter = new Scooter("London")
-    scooter.dock("Milan");
+    scooter3.dock("Milan");
     expect(scooter.station).toBe("Milan");
   })
 
