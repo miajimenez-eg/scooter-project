@@ -8,12 +8,13 @@ class User {
   }
 
   login(password){
-    if(this.password !== password){
+    if(password !== this.password){
       throw new Error("incorrect password")
     } else {
       this.loggedIn = true;
     }
   }
+  
 
   logout(){
     this.loggedIn = false;
