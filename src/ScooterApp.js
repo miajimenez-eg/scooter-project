@@ -27,7 +27,6 @@ class ScooterApp {
     }
   }
 
-
   // loginUser(username, password)
   loginUser(username, password) {
     if (!this.registeredUsers[username] || this.registeredUsers[username].password !== password) {
@@ -47,14 +46,25 @@ class ScooterApp {
     return this.registeredUsers[username].logout();
   }
   
+  // createScooter(station)
+  createScooter(station) {
+    if (!this.stations[station]) {
+      throw new Error("No such station");
+    }
+    const scooter = new Scooter();
+    this.stations[station].push(scooter);
+    scooter.station = station;
+    console.log("Created new scooter");
+    return scooter;
+  }
+
   // rentScooter(scooter, user)
   rentScooter(scooter, user) {
     let station = scooter.station;
     for (let key in this.stations) {
         if (station === key) {
           let scooters = Object.values(this.stations[key]);
-          if(!scooters.includes(scooter)){
-            scooter.station = null;
+          if(!scooters.includes(scooter) || scooter.user !== null){
             throw new Error('Scooter already rented');
           } else {
             scooter.user = user;
@@ -66,42 +76,6 @@ class ScooterApp {
         }
     }
 
-    // if (!stationFound) {
-   //     throw new Error('no such station');
-   // }
-   // if(this.stations[station].includes(scooter)){
-   //   console.log('Scooter already rented');
-   // } else {
-   //   scooter.station = null;
-   //   scooter.rent(user);
-   //   console.log('scooter is rented');
-   // }
-
-
-   // const station = Object.values(this.stations).find(
-   //   (value) => this.stations[value].includes(scooter)
-   // );
-   // if (!station) {
-   //   throw new Error("scooter already rented");
-   // }
-   // this.stations[station] = this.stations[station].filter(
-   //   (s) => s !== scooter
-   // );
-   // scooter.user = user;
-   // console.log("scooter is rented");
-
-  }
-
-  // createScooter(station)
-  createScooter(station) {
-    if (!this.stations[station]) {
-      throw new Error("No such station");
-    }
-    const scooter = new Scooter();
-    this.stations[station].push(scooter);
-    scooter.station = station;
-    console.log("Created new scooter");
-    return scooter;
   }
 
   // dockScooter(scooter, station)
@@ -128,11 +102,10 @@ class ScooterApp {
         throw new Error('no such station');
     }
 }
-
   // print()
   print(){
-    console.log(this.registeredUsers);
-    console.log(this.stations);
+    // console.log(this.registeredUsers);
+    // console.log(this.stations);
   }
 
 }
