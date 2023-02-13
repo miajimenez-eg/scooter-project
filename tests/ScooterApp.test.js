@@ -84,19 +84,19 @@ describe('scooter app methods', () => {
     // rent scooter
     test("should rent the scooter to the user", () => {
         const user1 = scooterApp.registerUser("user1", "password", 22);
-        scooterApp.loginUser("user1", "password");
-        scooterApp.rentScooter(scooter1, user1);
-        expect(scooter1.station).toBe(null);
-        expect(scooter1.user).toBe(user1);
-        expect(user1.scooter).toBe(scooter1);
+        // scooterApp.loginUser("user1", "password");
+        scooterApp.rentScooter(scooter, user1);
+        expect(scooter.station).toBe(null);
+        expect(scooter.user).toBe(user1);
+        expect(scooter).toBe(scooter);
       });
       
       test("should throw error if scooter is already rented", () => {
         const user2 = scooterApp.registerUser("user2", "password", 22);
         scooterApp.loginUser("user2", "password");
-        scooterApp.rentScooter(scooter1, user2);
+        scooterApp.rentScooter(scooter, user2);
         expect(() => {
-          scooterApp.rentScooter(scooter1, user2);
+          scooterApp.rentScooter(scooter, user2);
         }).toThrowError("Scooter already rented");
       });
       

@@ -34,7 +34,7 @@ class ScooterApp {
       throw new Error("Username or password is incorrect");
     } else {
       console.log(`User has been logged in`);
-      return this.registeredUsers[username].login();
+      return this.registeredUsers[username].login(password);
     }
   }
 
@@ -49,17 +49,24 @@ class ScooterApp {
   
   // rentScooter(scooter, user)
   rentScooter(scooter, user) {
-    const station = Object.values(this.stations).find(
-      (value) => this.stations[value].includes(scooter)
-    );
-    if (!station) {
-      throw new Error("scooter already rented");
+    let station = scooter.station;
+    for (let key in this.stations) {
+        if (station === key) {
+          let scooters = Object.values(this.stations[key]);
+          if(!scooters.includes(scooter)){
+            this.stations[station][scooter] = null;
+            scooter.station = null;
+            throw new Error('scooter already rented');
+          } else {
+
+            this.stations[station][scooter] = null;
+            scooter.user = user;
+            console.log('Scooter is rented');
+            break;
+          }
+
+        }
     }
-    this.stations[station] = this.stations[station].filter(
-      (s) => s !== scooter
-    );
-    scooter.user = user;
-    console.log("scooter is rented");
   }
 
   // createScooter(station)
@@ -99,13 +106,11 @@ class ScooterApp {
     }
 }
 
-  
-
   // print()
-  // print(){
-  //   console.log(this.registeredUsers);
-  //   console.log(this.stations);
-  // }
+  print(){
+    console.log(this.registeredUsers);
+    console.log(this.stations);
+  }
 
 }
 
