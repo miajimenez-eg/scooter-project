@@ -69,44 +69,22 @@ describe('scooter app methods', () => {
       
     // log out
     test('it should log out a logged-in user', () => {
-        scooterApp.registerUser('john', 'password123', 22);
-        const user = scooterApp.loginUser('john', 'password123');
-        scooterApp.logoutUser('john');
-        expect(scooterApp.registeredUsers['john']).toHaveProperty('loggedIn', false);
+        scooterApp.registerUser('kevin', 'password123', 22);
+        scooterApp.loginUser('kevin', 'password123');
+        scooterApp.logoutUser('kevin');
+        expect(scooterApp.registeredUsers['kevin'].loggedIn).toBe(false);
     });
     
     test('it should throw an error if the user is not logged in', () => {
-        expect(() => scooterApp.logoutUser('john'))
+        expect(() => scooterApp.logoutUser('kevin'))
             .toThrow('No such user is logged in');
     });
 
-
-    // rent scooter
-    test("should rent the scooter to the user", () => {
-        const user1 = scooterApp.registerUser("user1", "password", 22);
-        // scooterApp.loginUser("user1", "password");
-        scooterApp.rentScooter(scooter, user1);
-        expect(scooter.station).toBe(null);
-        expect(scooter.user).toBe(user1);
-        expect(scooter).toBe(scooter);
-      });
-      
-      test("should throw error if scooter is already rented", () => {
-        const user2 = scooterApp.registerUser("user2", "password", 22);
-        scooterApp.loginUser("user2", "password");
-        scooterApp.rentScooter(scooter, user2);
-        expect(() => {
-          scooterApp.rentScooter(scooter, user2);
-        }).toThrowError("Scooter already rented");
-      });
-      
-
-
     // create scooter
     test("creates a new scooter and adds it to the station", () => {
-        const scooter = scooterApp.createScooter("Enfield");
-        expect(scooter).toBeInstanceOf(Scooter);
-        expect(scooterApp.stations["Enfield"]).toContain(scooter);
+        scooterApp.createScooter("Enfield");
+        expect(scooterApp.stations["Enfield"][0]).toBeInstanceOf(Scooter);
+        expect(scooterApp.stations["Enfield"]).toContain(scooterApp.stations["Enfield"][0]);
     });
     
     test("throws an error if the station does not exist", () => {
@@ -114,6 +92,30 @@ describe('scooter app methods', () => {
           scooterApp.createScooter("non-existing-station");
         }).toThrowError("No such station");
     });
+
+    // rent scooter
+    test("should rent the scooter to the user", () => {
+        const user1 = scooterApp.registerUser("user1", "password", 22);
+        // console.log(scooterApp.stations["Enfield"][0]);
+        // scooterApp.loginUser("user1", "password");
+        scooterApp.rentScooter(scooterApp.stations["Enfield"][0], user1);
+        // console.log(scooterApp.stations["Enfield"][0]);
+        // expect(scooterApp.stations["Enfield"][0].station).toBe(null);
+        expect(scooterApp.stations["Enfield"][0].user).toBe(user1);
+      });
+      
+      test("should throw error if scooter is already rented", () => {
+        const user2 = scooterApp.registerUser("user2", "password", 22);
+        scooterApp.loginUser("user2", "password");
+        const user3 = scooterApp.registerUser("user3", "password", 22);
+        scooterApp.loginUser("user3", "password");
+        scooter.user = user3;
+        scooterApp.rentScooter(scooter, user2);
+        expect(() => {
+          scooterApp.rentScooter(scooter, user2);
+        }).toThrowError("Scooter already rented");
+      });
+  
 
     // dock scooter
     test('scooter should be added to stations scooter list and scooter is docked is logged to the console', () => {

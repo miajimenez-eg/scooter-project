@@ -40,7 +40,7 @@ class ScooterApp {
 
   // logoutUser(username)
   logoutUser(username) {
-    if (!this.registeredUsers[username] || !this.registeredUsers[username].isLoggedIn) {
+    if ((!(this.registeredUsers.hasOwnProperty(username))) || (this.registeredUsers[username].loggedIn === false)) {
       throw new Error("No such user is logged in");
     }
     console.log(`User has been logged out`);
@@ -54,19 +54,42 @@ class ScooterApp {
         if (station === key) {
           let scooters = Object.values(this.stations[key]);
           if(!scooters.includes(scooter)){
-            this.stations[station][scooter] = null;
             scooter.station = null;
-            throw new Error('scooter already rented');
+            throw new Error('Scooter already rented');
           } else {
-
-            this.stations[station][scooter] = null;
             scooter.user = user;
+            scooter.station = null;
             console.log('Scooter is rented');
             break;
           }
 
         }
     }
+
+    // if (!stationFound) {
+   //     throw new Error('no such station');
+   // }
+   // if(this.stations[station].includes(scooter)){
+   //   console.log('Scooter already rented');
+   // } else {
+   //   scooter.station = null;
+   //   scooter.rent(user);
+   //   console.log('scooter is rented');
+   // }
+
+
+   // const station = Object.values(this.stations).find(
+   //   (value) => this.stations[value].includes(scooter)
+   // );
+   // if (!station) {
+   //   throw new Error("scooter already rented");
+   // }
+   // this.stations[station] = this.stations[station].filter(
+   //   (s) => s !== scooter
+   // );
+   // scooter.user = user;
+   // console.log("scooter is rented");
+
   }
 
   // createScooter(station)
